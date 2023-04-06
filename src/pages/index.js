@@ -41,7 +41,7 @@ const columns = [
 
 export default function DataTable({userData}) {
   return (
-      <div style={{ height: 500, width: '100%' }}>
+      <div style={{ height: 900, width: '100%' }}>
         <DataGrid
             rows={userData}
             columns={columns}

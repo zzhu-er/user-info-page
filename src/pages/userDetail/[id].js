@@ -4,6 +4,7 @@ import {useRouter} from "next/router";
 export default function UserDetail({ data, emailData }) {
   const router = useRouter()
   const { id } = router.query
+
   let counter = 1;
   const emailList = emailData.map(email => <li key={counter++}>{email.email}</li>);
   return (
