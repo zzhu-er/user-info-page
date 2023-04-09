@@ -1,5 +1,6 @@
 import {addEmailForUser} from "@component/services/api";
 import Button from "@mui/material/Button";
+import {Typography} from "@mui/material";
 
 export default function AddButton({userId, emails, onAdd}) {
   async function handleClick() {
@@ -13,6 +14,8 @@ export default function AddButton({userId, emails, onAdd}) {
 
   return (
       <Button variant="contained" onClick={handleClick}>
-        ADD
+        <Typography variant="button">
+          ADD
+        </Typography>
       </Button>);
 };

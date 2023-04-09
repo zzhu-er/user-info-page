@@ -1,5 +1,6 @@
 import {deleteEmailFromUser} from "@component/services/api";
 import Button from '@mui/material/Button';
+import {Typography} from "@mui/material";
 
 export default function DeleteButton({userId, emailId, onDelete}) {
   const handleDelete = async () => {
@@ -14,6 +15,8 @@ export default function DeleteButton({userId, emailId, onDelete}) {
   //     </button>);
   return (
       <Button variant="contained" onClick={handleDelete}>
-        Delete
+        <Typography variant="button">
+          Delete
+        </Typography>
       </Button>);
 }

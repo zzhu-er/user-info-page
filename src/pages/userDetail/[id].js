@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {useRouter} from "next/router";
 import EmailList from "@component/components/EmailList";
-import {TextField} from "@mui/material";
-import AddButton from "@component/components/AddButton";
+import {Typography} from "@mui/material";
 
 export default function UserDetail({data, emailData}) {
   const router = useRouter()
@@ -15,12 +14,14 @@ export default function UserDetail({data, emailData}) {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-        <h2>User ID: {id}</h2>
-        <h2>Full Name: {data.name}</h2>
-        <h2>Age: {data.age}</h2>
-        <h2>Create Time: {data.createdAt}</h2>
-        <h2>Update Time: {data.updatedAt}</h2>
-        <h2>Email List:</h2>
+        <Typography variant="h4" gutterBottom>
+          User ID: {id}
+        </Typography>
+        <Typography variant="h4" gutterBottom>Full Name: {data.name}</Typography>
+        <Typography variant="h4" gutterBottom>Age: {data.age}</Typography>
+        <Typography variant="h4" gutterBottom>Create Time: {data.createdAt}</Typography>
+        <Typography variant="h4" gutterBottom>Update Time: {data.updatedAt}</Typography>
+        <Typography variant="h4" gutterBottom>Email List:</Typography>
         <EmailList userId={id} emailData={emailData}></EmailList>
       </div>
   );

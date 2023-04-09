@@ -2,7 +2,7 @@ import DeleteButton from "@component/components/DeleteButton";
 import * as React from "react";
 import {useState} from "react";
 import AddButton from "@component/components/AddButton";
-import {TextField} from "@mui/material";
+import {TextField, Typography} from "@mui/material";
 import {fetchEmailsFromUser} from "@component/services/api";
 
 export default function EmailList({userId, emailData}) {
@@ -20,8 +20,10 @@ export default function EmailList({userId, emailData}) {
 
   const emailList = emails.map((email) => (
       <li key={email.id}
-          style={{marginBottom: 10}}>
-        {email.email}
+          style={{marginBottom: 10, display: "flex", flexDirection: "row"}}>
+        <Typography variant="h6">
+          {email.email}
+        </Typography>
         <DeleteButton userId={userId}
                       emailId={email.id}
                       onDelete={handleDelete}>
@@ -44,7 +46,8 @@ export default function EmailList({userId, emailData}) {
               multiline
               value={textFieldValue}
               onChange={(e) => {
-                setTextFieldValue(e.target.value);}}
+                setTextFieldValue(e.target.value);
+              }}
           />
           <AddButton
               userId={userId}
