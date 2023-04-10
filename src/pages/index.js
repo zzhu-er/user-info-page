@@ -6,8 +6,7 @@ const columns = [
   {
     field: 'id',
     headerName: 'ID',
-    sortable: false,
-    width: 70,
+    width: 300,
     renderCell: (params) => (
         <Link href={`userDetail/${params.value}`}>{params.value}</Link>
     ),
@@ -15,26 +14,22 @@ const columns = [
   {
     field: 'age',
     headerName: 'Age',
-    sortable: false,
     type: 'number',
-    width: 90,
+    width: 300,
   },
   {
     field: 'name',
     headerName: 'Full name',
-    sortable: false,
-    width: 160,
+    width: 300,
   },
   {
     field: 'createdAt',
     headerName: 'Create Time',
-    sortable: false,
     width: 300,
   },
   {
     field: 'updatedAt',
     headerName: 'Update Time',
-    sortable: false,
     width: 300,
   },
 ];
@@ -46,6 +41,7 @@ export default function DataTable({userData}) {
             rows={userData}
             columns={columns}
             checkboxSelection
+            sort
         />
       </div>
   );
