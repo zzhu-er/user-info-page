@@ -1,59 +1,67 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
 import Link from "next/link";
+import {useState} from "react";
+import {Table} from "antd";
+import {fetchUsersWithPagination} from "@component/services/api";
 
 const columns = [
   {
-    field: 'id',
-    headerName: 'ID',
-    width: 300,
-    renderCell: (params) => (
-        <Link href={`userDetail/${params.value}`}>{params.value}</Link>
-    ),
+    dataIndex: 'id',
+    title: 'ID',
+    sorter: (a, b) => a.id - b.id,
+    defaultSortOrder: 'ascend',
+    render: (text) => <Link href={`userDetail/${text}`}>{text}</Link>
   },
   {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 300,
+    dataIndex: 'age',
+    title: 'Age',
+    sorter: (a, b) => a.age - b.age,
   },
   {
-    field: 'name',
-    headerName: 'Full name',
-    width: 300,
+    dataIndex: 'name',
+    title: 'Full name',
   },
   {
-    field: 'createdAt',
-    headerName: 'Create Time',
-    width: 300,
+    dataIndex: 'createdAt',
+    title: 'Create Time',
   },
   {
-    field: 'updatedAt',
-    headerName: 'Update Time',
-    width: 300,
+    dataIndex: 'updatedAt',
+    title: 'Update Time',
   },
 ];
 
 export default function DataTable({userData}) {
+  const [renderData, setRenderData] = useState(userData);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 5,
+    pageSizeOptions: [5, 10, 15, 20],
+    total: 500,
+  });
+
+  const handleChange = async (pagination) => {
+    const data = await fetchUsersWithPagination({page: pagination.current, size: pagination.pageSize});
+    setRenderData(data);
+    setPagination({...pagination, current: pagination.current, pageSize: pagination.pageSize});
+  };
+
   return (
-      <div style={{ height: "100vh", width: '100%' }}>
-        <DataGrid
-            rows={userData}
-            columns={columns}
-            checkboxSelection
-            sort
-        />
+      <div style={{height: "100vh", width: '100%'}}>
+        <Table rowKey={record => record.id}
+               columns={columns}
+               dataSource={renderData}
+               pagination={pagination}
+               onChange={handleChange}/>
       </div>
   );
 }
 
 export async function getStaticProps() {
-  const res = await fetch('http://localhost:8080/users')
-  const userData = await res.json()
+  const res = await fetch('http://localhost:8080/users?page=0&size=5');
+  const userData = await res.json();
 
   return {
-    props: {
-      userData,
-    },
+    props: {userData},
   }
 }

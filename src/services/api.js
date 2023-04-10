@@ -34,3 +34,15 @@ export async function fetchEmailsFromUser({userId}) {
     console.error(error);
   }
 }
+
+export async function fetchUsersWithPagination({page, size}) {
+  try {
+    const res = await axios.get(
+        `http://localhost:8080/users?page=${page - 1}&size=${size}`);
+    const data = res.data;
+    console.log(data);
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+}
