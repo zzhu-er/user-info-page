@@ -7,13 +7,13 @@ export default function AddButton({userId, emails, onAdd}) {
     emails = JSON.stringify(
         emails.split(",")
         .map(email => (
-            {"email": email})));
+            {"email": email.replace(/\s/g, '')})));
     await addEmailForUser({userId, emails});
     onAdd(emails);
   }
 
   return (
-      <Button variant="contained" onClick={handleClick}>
+      <Button className="add-button" variant="contained" onClick={handleClick}>
         <Typography variant="button">
           ADD
         </Typography>

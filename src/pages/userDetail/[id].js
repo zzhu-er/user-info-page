@@ -8,20 +8,29 @@ export default function UserDetail({data, emailData}) {
   const {id} = router.query
 
   return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-        <Typography variant="h4" gutterBottom>
-          User ID: {id}
-        </Typography>
-        <Typography variant="h4" gutterBottom>Full Name: {data.name}</Typography>
-        <Typography variant="h4" gutterBottom>Age: {data.age}</Typography>
-        <Typography variant="h4" gutterBottom>Create Time: {data.createdAt}</Typography>
-        <Typography variant="h4" gutterBottom>Update Time: {data.updatedAt}</Typography>
-        <Typography variant="h4" gutterBottom>Email List:</Typography>
+      <div className="user-info"
+           style={{
+             display: "flex",
+             flexDirection: "column",
+             justifyContent: "center",
+             alignItems: "center",
+             height: "100%",
+           }}>
+        <Typography variant="h4">User ID: {id}</Typography>
+        <div className="basic-info">
+          <Typography className="name" variant="h4">
+            Full Name: {data.name}</Typography>
+          <Typography className="age" variant="h4">Age: {data.age}</Typography>
+        </div>
+        <div className="time-info">
+          <Typography className="create" variant="h4">
+            Create Time: {data.createdAt}
+          </Typography>
+          <Typography className="update" variant="h4">
+            Update Time: {data.updatedAt}
+          </Typography>
+        </div>
+        <Typography variant="h4">Email List:</Typography>
         <EmailList userId={id} emailData={emailData}></EmailList>
       </div>
   );

@@ -8,13 +8,8 @@ export default function DeleteButton({userId, emailId, onDelete}) {
     onDelete(emailId);
   };
 
-  // return (
-  //     <button style={{marginLeft: 20, fontSize: 20}}
-  //             onClick={handleDelete}>
-  //       Delete
-  //     </button>);
   return (
-      <Button variant="contained" onClick={handleDelete}>
+      <Button className="delete-button" variant="contained" onClick={handleDelete}>
         <Typography variant="button">
           Delete
         </Typography>

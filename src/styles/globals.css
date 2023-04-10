@@ -1,0 +1,43 @@
+.basic-info * {
+  display: inline-block;
+}
+
+.basic-info .name {
+  margin-right: 20px;
+  color: blue;
+}
+
+.basic-info .age {
+  margin-left: 20px;
+  color: brown;
+}
+
+.user-info * {
+  margin-bottom: 10px;
+}
+
+.time-info * {
+  color: cornflowerblue;
+}
+
+.email-content {
+  width: 400px;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.delete-button {
+  position: absolute;
+  right: 0;
+}
+
+.add-button {
+  position: absolute;
+  right: 0;
+}
+
+Button {
+  width: 90px;
+  height: 40px;
+}

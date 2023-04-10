@@ -16,12 +16,13 @@ export default function EmailList({userId, emailData}) {
   const handleAdd = async () => {
     const newEmails = await fetchEmailsFromUser({userId});
     setEmails(newEmails);
+    setTextFieldValue("");
   };
 
   const emailList = emails.map((email) => (
       <li key={email.id}
           style={{marginBottom: 10, display: "flex", flexDirection: "row"}}>
-        <Typography variant="h6">
+        <Typography className="email-content" variant="h6">
           {email.email}
         </Typography>
         <DeleteButton userId={userId}
@@ -31,23 +32,22 @@ export default function EmailList({userId, emailData}) {
       </li>));
 
   return (
-      <div>
-        <ul style={{fontSize: 25}}>{emailList}</ul>
+      <div style={{width: 500, position: "relative"}}>
+        <ul style={{fontSize: 25, paddingLeft: 0}}>{emailList}</ul>
         <div style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "center",
-          alignContent: "center"
         }}>
           <TextField
-              style={{marginRight: 10}}
               id="outlined-multiline-flexible"
-              label="Multiline"
+              label="Emails to be added"
               multiline
+              size="small"
               value={textFieldValue}
               onChange={(e) => {
                 setTextFieldValue(e.target.value);
               }}
+              style={{width: 400}}
           />
           <AddButton
               userId={userId}
