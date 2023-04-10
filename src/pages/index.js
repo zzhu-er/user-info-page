@@ -3,6 +3,7 @@ import Link from "next/link";
 import {useState} from "react";
 import {Table} from "antd";
 import {fetchUsersWithPagination} from "@component/services/api";
+import dayjs from "dayjs";
 
 const columns = [
   {
@@ -41,9 +42,20 @@ export default function DataTable({userData}) {
   });
 
   const handleChange = async (pagination) => {
-    const data = await fetchUsersWithPagination({page: pagination.current, size: pagination.pageSize});
-    setRenderData(data);
-    setPagination({...pagination, current: pagination.current, pageSize: pagination.pageSize});
+    const data = await fetchUsersWithPagination(
+        {page: pagination.current, size: pagination.pageSize});
+    const formatted = data.map(user => (
+        {
+          ...user,
+          createdAt: dayjs(user.createdAt).format("YYYY-MM-DD"),
+          updatedAt: dayjs(user.updatedAt).format("YYYY-MM-DD"),
+        }));
+    setRenderData(formatted);
+    setPagination({
+      ...pagination,
+      current: pagination.current,
+      pageSize: pagination.pageSize
+    });
   };
 
   return (
@@ -59,7 +71,13 @@ export default function DataTable({userData}) {
 
 export async function getStaticProps() {
   const res = await fetch('http://localhost:8080/users?page=0&size=5');
-  const userData = await res.json();
+  const rawData = await res.json();
+  const userData = rawData.map(user => (
+      {
+        ...user,
+        createdAt: dayjs(user.createdAt).format("YYYY-MM-DD"),
+        updatedAt: dayjs(user.updatedAt).format("YYYY-MM-DD"),
+      }));
 
   return {
     props: {userData},

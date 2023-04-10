@@ -2,10 +2,17 @@ import * as React from 'react';
 import {useRouter} from "next/router";
 import EmailList from "@component/components/EmailList";
 import {Typography} from "@mui/material";
+import dayjs from "dayjs";
 
 export default function UserDetail({data, emailData}) {
   const router = useRouter()
   const {id} = router.query
+
+  const formattedData = {
+    ...data,
+    createdAt: dayjs(data.createdAt).toDate().toString(),
+    updatedAt: dayjs(data.updatedAt).toDate().toString(),
+  };
 
   return (
       <div className="user-info"
@@ -19,15 +26,15 @@ export default function UserDetail({data, emailData}) {
         <Typography variant="h4">User ID: {id}</Typography>
         <div className="basic-info">
           <Typography className="name" variant="h4">
-            Full Name: {data.name}</Typography>
-          <Typography className="age" variant="h4">Age: {data.age}</Typography>
+            Full Name: {formattedData.name}</Typography>
+          <Typography className="age" variant="h4">Age: {formattedData.age}</Typography>
         </div>
         <div className="time-info">
-          <Typography className="create" variant="h4">
-            Create Time: {data.createdAt}
+          <Typography className="create" variant="h6">
+            Create Time: {formattedData.createdAt}
           </Typography>
-          <Typography className="update" variant="h4">
-            Update Time: {data.updatedAt}
+          <Typography className="update" variant="h6">
+            Update Time: {formattedData.updatedAt}
           </Typography>
         </div>
         <Typography variant="h4">Email List:</Typography>
@@ -50,6 +57,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({params}) {
   const res = await fetch(`http://localhost:8080/users/${params.id}`)
   const data = await res.json()
+
   const emailRes = await fetch(
       `http://localhost:8080/users/${params.id}/emails`)
   const emailData = await emailRes.json()
