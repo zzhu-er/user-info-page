@@ -20,7 +20,7 @@ export default function EmailList({userId, emailData}) {
   };
 
   const emailList = emails.map((email) => (
-      <>
+      <div key={email.id}>
         <Divider textAlign="right">
           <Typography variant="overline">Email ID: {email.id}</Typography>
         </Divider>
@@ -34,7 +34,7 @@ export default function EmailList({userId, emailData}) {
                         onDelete={handleDelete}>
           </DeleteButton>
         </li>
-      </>));
+      </div>));
 
   return (
       <div style={{width: 500, position: "relative"}}>
