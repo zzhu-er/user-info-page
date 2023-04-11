@@ -35,7 +35,7 @@ const columns = [
   },
 ];
 
-export default function DataTable({userData}) {
+export default function DataTable({userData, userCount}) {
   const [renderData, setRenderData] = useState(userData);
   const [searchMode, setSearchMode] = useState(false);
   const [searchSpecs, setSearchSpecs] = useState({});
@@ -43,7 +43,8 @@ export default function DataTable({userData}) {
     current: 1,
     pageSize: 5,
     pageSizeOptions: [5, 10, 15, 20],
-    total: 500,
+    total: userCount,
+    showSizeChanger: true,
   });
 
   const handleChange = async (pagination) => {
@@ -52,7 +53,7 @@ export default function DataTable({userData}) {
     const pageSpecs = {page: pagination.current - 1, size: pagination.pageSize}
     const specs = searchMode ? {...pageSpecs, ...searchSpecs} : pageSpecs;
     const data = await dynamicFetchUsers({...specs});
-    const formatted = data.map(user => (
+    const formatted = data["content"].map(user => (
         {
           ...user,
           createdAt: dayjs(user.createdAt).format("YYYY-MM-DD"),
@@ -62,14 +63,14 @@ export default function DataTable({userData}) {
     setPagination({
       ...pagination,
       current: pagination.current,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
     });
   };
 
   return (
       <div style={{height: "100vh", width: '100%'}}>
         <SearchForm originalData={userData}
-                    renderData={renderData}
+                    userCount={userCount}
                     handleData={setRenderData}
                     pageModel={pagination}
                     handlePage={setPagination}
@@ -87,15 +88,18 @@ export default function DataTable({userData}) {
 
 export async function getStaticProps() {
   const res = await fetch('http://localhost:8080/users?page=0&size=5');
+  // console.log(res.json());
   const rawData = await res.json();
-  const userData = rawData.map(user => (
+  const userData = rawData.content.map(user => (
       {
         ...user,
         createdAt: dayjs(user.createdAt).format("YYYY-MM-DD"),
         updatedAt: dayjs(user.updatedAt).format("YYYY-MM-DD"),
       }));
+  const userCount = rawData["totalElements"];
+  const pageCount = rawData["totalPages"];
 
   return {
-    props: {userData},
+    props: {userData, userCount},
   }
 }

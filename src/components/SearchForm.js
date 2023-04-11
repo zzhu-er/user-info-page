@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 const AdvancedSearchForm = ({
   originalData,
-  data,
+  userCount,
   handleData,
   pageModel,
   handlePage,
@@ -44,7 +44,7 @@ const AdvancedSearchForm = ({
     handleSearchMode(true);
     handleSpecs(values);
     const data = await dynamicFetchUsers({page: 0, size: 5, ...values});
-    const formatted = data.map(user => (
+    const formatted = data["content"].map(user => (
         {
           ...user,
           createdAt: dayjs(user.createdAt).format("YYYY-MM-DD"),
@@ -55,7 +55,7 @@ const AdvancedSearchForm = ({
       current: 1,
       pageSize: 5,
       pageSizeOptions: [5, 10, 15, 20],
-      total: 500,
+      total: data["totalElements"],
     });
   };
   return (
@@ -87,7 +87,7 @@ const AdvancedSearchForm = ({
                     current: 1,
                     pageSize: 5,
                     pageSizeOptions: [5, 10, 15, 20],
-                    total: 500,
+                    total: userCount,
                   });
                 }}
             >
@@ -100,16 +100,17 @@ const AdvancedSearchForm = ({
 };
 export default function SearchForm({
   originalData,
-  renderData,
+  userCount,
   handleData,
   pageModel,
   handlePage,
   handleSpecs,
   handleSearchMode
 }) {
+
   return (
       <div>
-        <AdvancedSearchForm originalData={originalData} data={renderData}
+        <AdvancedSearchForm originalData={originalData} userCount={userCount}
                             handleData={handleData} pageModel={pageModel}
                             handlePage={handlePage} handleSpecs={handleSpecs}
                             handleSearchMode={handleSearchMode}/>
