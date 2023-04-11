@@ -1,5 +1,6 @@
 import axios from "axios";
 import {console} from "next/dist/compiled/@edge-runtime/primitives/console";
+import dayjs from "dayjs";
 
 export async function deleteEmailFromUser({userId, emailId}) {
   try {
@@ -35,10 +36,19 @@ export async function fetchEmailsFromUser({userId}) {
   }
 }
 
-export async function fetchUsersWithPagination({page, size}) {
+export async function dynamicFetchUsers({page, size, age, from, name, to}) {
+  const specs = {page, size, age, from, name, to};
+  console.log(specs)
+  const formattedSpecs = {
+    ...specs,
+    from: (specs.from ? dayjs(specs.from).format("YYYY-MM-DDTHH:mm:ss[Z]") : undefined),
+    to: (specs.to ? dayjs(specs.to).format("YYYY-MM-DDTHH:mm:ss[Z]") : undefined)
+  }
+  const uri = Object.entries(formattedSpecs).filter(spec => spec[1] !== undefined).map(
+      spec => spec.join("=")).join('&');
   try {
     const res = await axios.get(
-        `http://localhost:8080/users?page=${page - 1}&size=${size}`);
+        "http://localhost:8080/users?" + uri);
     const data = res.data;
     console.log(data);
     return data;
