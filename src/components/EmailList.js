@@ -2,7 +2,7 @@ import DeleteButton from "@component/components/DeleteButton";
 import * as React from "react";
 import {useState} from "react";
 import AddButton from "@component/components/AddButton";
-import {TextField, Typography} from "@mui/material";
+import {Divider, TextField, Typography} from "@mui/material";
 import {fetchEmailsFromUser} from "@component/services/api";
 
 export default function EmailList({userId, emailData}) {
@@ -20,20 +20,28 @@ export default function EmailList({userId, emailData}) {
   };
 
   const emailList = emails.map((email) => (
-      <li key={email.id}
-          style={{marginBottom: 10, display: "flex", flexDirection: "row"}}>
-        <Typography className="email-content" variant="h6">
-          {email.email}
-        </Typography>
-        <DeleteButton userId={userId}
-                      emailId={email.id}
-                      onDelete={handleDelete}>
-        </DeleteButton>
-      </li>));
+      <>
+        <Divider textAlign="right">
+          <Typography variant="overline">Email ID: {email.id}</Typography>
+        </Divider>
+        <li key={email.id}
+            style={{marginBottom: 10, display: "flex", flexDirection: "row"}}>
+          <Typography className="email-content" variant="h6">
+            {email.email}
+          </Typography>
+          <DeleteButton userId={userId}
+                        emailId={email.id}
+                        onDelete={handleDelete}>
+          </DeleteButton>
+        </li>
+      </>));
 
   return (
       <div style={{width: 500, position: "relative"}}>
         <ul style={{fontSize: 25, paddingLeft: 0}}>{emailList}</ul>
+        <Divider textAlign="left">
+          <Typography variant="overline">Please Add New Emails</Typography>
+        </Divider>
         <div style={{
           display: "flex",
           flexDirection: "row",
