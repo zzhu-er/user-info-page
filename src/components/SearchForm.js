@@ -1,6 +1,9 @@
-import {Button, Col, Form, Input, Row, theme} from 'antd';
+import {Button, Col, DatePicker, Form, Input, Row, theme} from 'antd';
 import {dynamicFetchUsers} from "@component/services/api";
 import dayjs from "dayjs";
+import moment from "moment-timezone";
+
+moment.tz.setDefault('Etc/UTC');
 
 const AdvancedSearchForm = ({
   originalData,
@@ -20,11 +23,10 @@ const AdvancedSearchForm = ({
     padding: 24,
   };
   const searchFields = [{dataIndex: "age", label: "AGE"},
-    {dataIndex: "name", label: "NAME"},
-    {dataIndex: "from", label: "START DATE(Include)"},
-    {dataIndex: "to", label: "END DATE(Exclude)"}];
+    {dataIndex: "name", label: "NAME"},];
   const getFields = () => {
-    const count = 4;
+    const {RangePicker} = DatePicker;
+    const count = 2;
     const children = [];
     for (let i = 0; i < count; i++) {
       children.push(
@@ -38,12 +40,25 @@ const AdvancedSearchForm = ({
           </Col>,
       );
     }
+    children.push(
+        <Col span={12} key="3">
+          <Form.Item
+              name="timeRange"
+              label="Time Range"
+          >
+            <RangePicker showTime/>
+          </Form.Item>
+        </Col>,
+    );
     return children;
   };
   const onFinish = async (values) => {
+    const timeRange = values["timeRange"]
+    const pickedValues = (({age, name}) => ({age, name}))(values);
+    const specs = {...pickedValues, from: timeRange?timeRange[0]:undefined, to: timeRange?timeRange[1]:undefined}
     handleSearchMode(true);
-    handleSpecs(values);
-    const data = await dynamicFetchUsers({page: 0, size: 5, ...values});
+    handleSpecs(specs);
+    const data = await dynamicFetchUsers({page: 0, size: 5, ...specs});
     const formatted = data["content"].map(user => (
         {
           ...user,
@@ -56,6 +71,7 @@ const AdvancedSearchForm = ({
       pageSize: 5,
       pageSizeOptions: [5, 10, 15, 20],
       total: data["totalElements"],
+      showSizeChanger: true,
     });
   };
   return (
@@ -88,6 +104,7 @@ const AdvancedSearchForm = ({
                     pageSize: 5,
                     pageSizeOptions: [5, 10, 15, 20],
                     total: userCount,
+                    showSizeChanger: true,
                   });
                 }}
             >

@@ -7,7 +7,6 @@ import dayjs from "dayjs";
 export default function UserDetail({data, emailData}) {
   const router = useRouter()
   const {id} = router.query
-
   const formattedData = {
     ...data,
     createdAt: dayjs(data.createdAt).toDate().toString(),
@@ -50,7 +49,7 @@ export async function getStaticPaths() {
   const res = await fetch('http://localhost:8080/users')
   const users = await res.json()
 
-  const paths = users.map((user) => ({
+  const paths = users["content"].map((user) => ({
     params: {id: user.id.toString()},
   }))
 

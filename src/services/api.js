@@ -38,12 +38,12 @@ export async function fetchEmailsFromUser({userId}) {
 
 export async function dynamicFetchUsers({page, size, age, from, name, to}) {
   const specs = {page, size, age, from, name, to};
-  console.log(specs)
   const formattedSpecs = {
     ...specs,
     from: (specs.from ? dayjs(specs.from).format("YYYY-MM-DDTHH:mm:ss[Z]") : undefined),
     to: (specs.to ? dayjs(specs.to).format("YYYY-MM-DDTHH:mm:ss[Z]") : undefined)
   }
+  console.log(formattedSpecs)
   const uri = Object.entries(formattedSpecs).filter(spec => spec[1] !== undefined).map(
       spec => spec.join("=")).join('&');
   try {
