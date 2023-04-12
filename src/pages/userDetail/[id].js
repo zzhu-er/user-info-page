@@ -49,7 +49,7 @@ export async function getStaticPaths() {
   const res = await fetch('http://localhost:8080/users')
   const users = await res.json()
 
-  const paths = users["content"].map((user) => ({
+  const paths = users.content.content.map((user) => ({
     params: {id: user.id.toString()},
   }))
 

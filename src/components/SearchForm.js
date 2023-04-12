@@ -64,7 +64,7 @@ const AdvancedSearchForm = ({
     handleSearchMode(true);
     handleSpecs(specs);
     const data = await dynamicFetchUsers({page: 0, size: 5, ...specs});
-    const formatted = data["content"].map(user => (
+    const formatted = data.content.content.map(user => (
         {
           ...user,
           createdAt: dayjs(user.createdAt).format("YYYY-MM-DD"),

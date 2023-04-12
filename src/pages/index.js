@@ -53,7 +53,7 @@ export default function DataTable({userData, userCount}) {
     const pageSpecs = {page: pagination.current - 1, size: pagination.pageSize}
     const specs = searchMode ? {...pageSpecs, ...searchSpecs} : pageSpecs;
     const data = await dynamicFetchUsers({...specs});
-    const formatted = data["content"].map(user => (
+    const formatted = data.content.content.map(user => (
         {
           ...user,
           createdAt: dayjs(user.createdAt).format("YYYY-MM-DD"),
@@ -91,7 +91,7 @@ export default function DataTable({userData, userCount}) {
 export async function getStaticProps() {
   const res = await fetch('http://localhost:8080/users?page=0&size=5');
   const rawData = await res.json();
-  const userData = rawData.content.map(user => (
+  const userData = rawData.content.content.map(user => (
       {
         ...user,
         createdAt: dayjs(user.createdAt).format("YYYY-MM-DD"),
