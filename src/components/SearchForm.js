@@ -8,6 +8,7 @@ moment.tz.setDefault('Etc/UTC');
 const AdvancedSearchForm = ({
   originalData,
   userCount,
+  handleUserCount,
   handleData,
   pageModel,
   handlePage,
@@ -55,7 +56,11 @@ const AdvancedSearchForm = ({
   const onFinish = async (values) => {
     const timeRange = values["timeRange"]
     const pickedValues = (({age, name}) => ({age, name}))(values);
-    const specs = {...pickedValues, from: timeRange?timeRange[0]:undefined, to: timeRange?timeRange[1]:undefined}
+    const specs = {
+      ...pickedValues,
+      from: timeRange ? timeRange[0] : undefined,
+      to: timeRange ? timeRange[1] : undefined
+    }
     handleSearchMode(true);
     handleSpecs(specs);
     const data = await dynamicFetchUsers({page: 0, size: 5, ...specs});
@@ -73,6 +78,7 @@ const AdvancedSearchForm = ({
       total: data["totalElements"],
       showSizeChanger: true,
     });
+    handleUserCount(data["totalElements"]);
   };
   return (
       <Form form={form}
@@ -106,6 +112,7 @@ const AdvancedSearchForm = ({
                     total: userCount,
                     showSizeChanger: true,
                   });
+                  handleUserCount(userCount);
                 }}
             >
               Clear
@@ -118,6 +125,7 @@ const AdvancedSearchForm = ({
 export default function SearchForm({
   originalData,
   userCount,
+  handleUserCount,
   handleData,
   pageModel,
   handlePage,
@@ -128,6 +136,7 @@ export default function SearchForm({
   return (
       <div>
         <AdvancedSearchForm originalData={originalData} userCount={userCount}
+                            handleUserCount={handleUserCount}
                             handleData={handleData} pageModel={pageModel}
                             handlePage={handlePage} handleSpecs={handleSpecs}
                             handleSearchMode={handleSearchMode}/>
