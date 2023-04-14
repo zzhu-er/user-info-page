@@ -44,9 +44,10 @@ export default function UserDetail({data, emailData}) {
       </StyledEngineProvider>
   );
 }
-
+//API not available any more
+/*
 export async function getStaticPaths() {
-  const res = await fetch('http://localhost:8080/users')
+  const res = await fetch('http://localhost:8080/users ')
   const users = await res.json()
 
   const paths = users.content.content.map((user) => ({
@@ -62,6 +63,20 @@ export async function getStaticProps({params}) {
 
   const emailRes = await fetch(
       `http://localhost:8080/users/${params.id}/emails`)
+  const emailData = await emailRes.json()
+
+  return {props: {data, emailData}}
+}
+*/
+
+export async function getServerSideProps(context) {
+  const { id } = context.params;
+
+  const res = await fetch(`http://localhost:8080/users/${id}`)
+  const data = await res.json()
+
+  const emailRes = await fetch(
+      `http://localhost:8080/users/${id}/emails`)
   const emailData = await emailRes.json()
 
   return {props: {data, emailData}}
